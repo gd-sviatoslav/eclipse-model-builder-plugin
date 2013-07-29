@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension point="org.eclipse.ui.popupMenus">
+      <viewerContribution
+            id="model-builder-plugin.jdt.compilationunit.editorcontext"
+            targetID="#CompilationUnitEditorContext">
+         <action
+               class="org.lekbeser.eclipse.plugin.builder.GenerateBuilderAction"
+               id="model.builder.action.invoke"
+               label="Generate model builder code.."
+               menubarPath="org.eclipse.jdt.ui.source.menu/generateGroup">
+         </action>
+      </viewerContribution>
+   </extension>
+   <extension
+      point="org.eclipse.ui.actionSets">
+      <actionSet
+         label="Java Coding"
+         description="Action set containing coding related Java actions"
+         visible="true"
+         id="org.eclipse.jdt.ui.CodingActionSet2">
+         <menu
+            label="&amp;Source"
+            path="edit"
+            id="org.eclipse.jdt.ui.source.menu">
+         </menu>
+      <action
+         class="org.lekbeser.eclipse.plugin.builder.GenerateBuilderAction"
+         definitionId="model.builder.invoke"
+         id="model.builder.action.invoke"
+         label="Generate model builder code.."
+         menubarPath="org.eclipse.jdt.ui.source.menu/generateGroup">
+      </action>
+   </actionSet>
+   </extension>
+   <extension point="org.eclipse.ui.bindings">
+      <key commandId="model.builder.invoke"
+           schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+           sequence="CTRL+ALT+B">
+      </key>
+   </extension>
+   <extension point="org.eclipse.ui.commands">
+      <command id="model.builder.invoke"
+               name="Generate model builder code">
+      </command>
+   </extension>
+</plugin>
