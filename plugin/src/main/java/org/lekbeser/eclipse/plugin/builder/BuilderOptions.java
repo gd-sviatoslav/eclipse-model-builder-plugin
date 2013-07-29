@@ -7,15 +7,31 @@ import org.eclipse.jdt.core.IType;
 
 public class BuilderOptions {
 
+    private String typeName;
+    private String fullTypeName;
     private ICompilationUnit compilationUnit;
     private IType enclosingType;
     private List<IField> fields;
 
     private boolean formatSourceCode;
-    private boolean addCopyTo;
-    private boolean addCopyFrom;
 
     public BuilderOptions() {
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getFullTypeName() {
+        return fullTypeName;
+    }
+
+    public void setFullTypeName(String fullTypeName) {
+        this.fullTypeName = fullTypeName;
     }
 
     public ICompilationUnit getCompilationUnit() {
@@ -50,34 +66,24 @@ public class BuilderOptions {
         this.formatSourceCode = formatSourceCode;
     }
 
-    public boolean isAddCopyTo() {
-        return addCopyTo;
-    }
-
-    public void setAddCopyTo(boolean addCopyTo) {
-        this.addCopyTo = addCopyTo;
-    }
-
-    public boolean isAddCopyFrom() {
-        return addCopyFrom;
-    }
-
-    public void setAddCopyFrom(boolean addCopyFrom) {
-        this.addCopyFrom = addCopyFrom;
-    }
-
-    public static BuilderOptionsBuilder builder() {
-        return new BuilderOptionsBuilder();
-    }
-
     public static class BuilderOptionsBuilder {
 
+        private String typeName;
+        private String fullTypeName;
         private ICompilationUnit compilationUnit;
         private IType enclosingType;
         private List<IField> fields;
         private boolean formatSourceCode;
-        private boolean addCopyTo;
-        private boolean addCopyFrom;
+
+        public BuilderOptionsBuilder typeName(String value) {
+            this.typeName = value;
+            return this;
+        }
+
+        public BuilderOptionsBuilder fullTypeName(String value) {
+            this.fullTypeName = value;
+            return this;
+        }
 
         public BuilderOptionsBuilder compilationUnit(ICompilationUnit value) {
             this.compilationUnit = value;
@@ -99,26 +105,20 @@ public class BuilderOptions {
             return this;
         }
 
-        public BuilderOptionsBuilder addCopyTo(boolean value) {
-            this.addCopyTo = value;
-            return this;
-        }
-
-        public BuilderOptionsBuilder addCopyFrom(boolean value) {
-            this.addCopyFrom = value;
-            return this;
-        }
-
         public BuilderOptions build() {
             BuilderOptions result = new BuilderOptions();
+            result.setTypeName(typeName);
+            result.setFullTypeName(fullTypeName);
             result.setCompilationUnit(compilationUnit);
             result.setEnclosingType(enclosingType);
             result.setFields(fields);
             result.setFormatSourceCode(formatSourceCode);
-            result.setAddCopyTo(addCopyTo);
-            result.setAddCopyFrom(addCopyFrom);
             return result;
         }
+    }
+
+    public static BuilderOptionsBuilder builder() { 
+        return new BuilderOptionsBuilder(); 
     }
 
 }

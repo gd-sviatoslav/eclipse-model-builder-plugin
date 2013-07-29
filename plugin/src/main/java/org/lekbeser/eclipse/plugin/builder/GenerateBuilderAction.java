@@ -18,12 +18,15 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.lekbeser.eclipse.plugin.builder.BuilderOptions.BuilderOptionsBuilder;
 
 public class GenerateBuilderAction extends Action implements IEditorActionDelegate, IWorkbenchWindowActionDelegate {
 
     private IEditorPart editor;
 
     public void run(final IAction action) {
+        final BuilderOptionsBuilder options = BuilderOptions.builder();
+
         IWorkingCopyManager manager = JavaUI.getWorkingCopyManager();
         IEditorInput editorInput = editor.getEditorInput();
         try {
@@ -33,11 +36,16 @@ public class GenerateBuilderAction extends Action implements IEditorActionDelega
             IJavaElement elt = root.getElementAt(offset);
             IType enclosingType = (IType) elt.getAncestor(IJavaElement.TYPE);
 
+            options.enclosingType(enclosingType);
+            options.fullTypeName(enclosingType.getFullyQualifiedName());
+            options.typeName(enclosingType.getElementName());
+
             manager.connect(editorInput);
             ICompilationUnit workingCopy = manager.getWorkingCopy(editorInput);
+            options.compilationUnit(workingCopy);
 
             BuilderDialog dialog = new BuilderDialog(new Shell());
-            dialog.show(workingCopy, enclosingType);
+            dialog.show(options);
 
             synchronized (workingCopy) {
                 workingCopy.reconcile(ICompilationUnit.NO_AST, false, null, null);
