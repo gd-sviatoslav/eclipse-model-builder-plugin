@@ -1,53 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.lekbeser.eclipse</groupId>
-    <artifactId>model-builder-plugin</artifactId>
+  <parent>
+    <groupId>org.lekbeser.eclipse.model.builder</groupId>
+    <artifactId>all</artifactId>
     <version>1.0.0.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+  </parent>
 
-    <name>Eclipse Model Builder Plugin</name>
-    <description>Model Builder code generator plugin for the Eclipse IDE</description>
-    <inceptionYear>2013</inceptionYear>
-    <url>https://github.com/gd-sviatoslav/eclipse-model-builder-plugin/</url>
+  <artifactId>plugin</artifactId>
+  <packaging>eclipse-plugin</packaging>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
-
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <configuration>
-                    <pde>true</pde>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>snapshot</id>
-            <name>Snapshot repository</name>
-            <url>http://snapshots.maven.codehaus.org/maven2/</url>
-        </pluginRepository>
-    </pluginRepositories>
+  <name>Model Builder Plugin</name>
+  <description>Model Builder code generator plugin for the Eclipse IDE</description>
 
 </project>

@@ -1,12 +1,14 @@
 ## Eclipse Model Builder Plugin
 
-**Plugin is under construction. But seems to be stable.**
+**Plugin is under construction.**
 
 -----
 
 ### About
 
 This is a yet another eclipse plugin to generate fluent builders for POJO/DTO/Model classes. Especially suitable for DTO classes with a lot of fields. It helps to keep an immutability of DTO objects.
+
+Tested on platforms: Indigo (Eclipse 3.7)
 
 ### Features
 1. __TBD__
