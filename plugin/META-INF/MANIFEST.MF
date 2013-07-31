@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Name: Eclipse Model Builder Plugin
-Bundle-SymbolicName: model-builder-plugin;singleton:=true
-Bundle-Version: 1.0.0.0-SNAPSHOT
+Bundle-SymbolicName: plugin;singleton:=true
+Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.lekbeser.eclipse.plugin.builder.Activator
 Bundle-Vendor: Lekbeser
