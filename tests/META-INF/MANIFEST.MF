@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests
-Bundle-SymbolicName: tests
+Bundle-SymbolicName: model-builder-tests
 Bundle-Version: 1.0.0.qualifier
 Export-Package: org.lekbeser.eclipse.plugin.builder.sample

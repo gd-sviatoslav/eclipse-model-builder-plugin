@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="feature"
+      id="model-builder-feature"
       label="Model Builder Feature"
       version="1.0.0.qualifier">
 
@@ -17,7 +17,7 @@
    </license>
 
    <plugin
-         id="plugin"
+         id="model-builder-plugin"
          download-size="0"
          install-size="0"
          version="0.0.0"
