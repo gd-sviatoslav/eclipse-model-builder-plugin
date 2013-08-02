@@ -1,33 +1,35 @@
 ## Eclipse Model Builder Plugin
 
-**Plugin is under construction. But seems to be stable.**
-
------
-
-### About
+## About
 
 This is a yet another eclipse plugin to generate fluent builders for POJO/DTO/Model classes. Especially suitable for DTO classes with a lot of fields. It helps to keep an immutability of DTO objects.
 
-### Features
-1. __TBD__
+## Features
+1. Generates builder class with fluent api methods for setting master bean properties (see example below).
+1. Works for inner model classes.
+1. Generates **from** method to copy values from another bean  (see example below).
+1. By making master bean properties private and providing only getters, one can follow an immutability pattern by means of builder object (of generated builder class). See usage section below.
+
+### Tested on platforms
+ - **Indigo** (Eclipse 3.7)
 
 ### Generally, inspired by
-1. https://github.com/henningjensen/bpep
-1. https://github.com/belowm/de.below.bgen
+ - https://github.com/henningjensen/bpep
+ - https://github.com/belowm/de.below.bgen
 
-### Usage
+## Usage
 
-#### How to install
-1. Download the sources, build it with Maven 'mvn package'.
-1. Put the result jar file in the eclipse/dropins directory.
+### How to install
+1. Download the sources, build it with Maven __mvn package__.
+1. Put the result jar file (../plugin/target/model-builder-plugin-1.0.0-SNAPSHOT.jar) in the __eclipse/dropins__ directory.
 
-#### How to use
+### How to use
 
-Place cursor inside a model class in the java editor window, right click and select Source -> Generate model builder code...
-Then select which fields you want to expose in the builder. Click 'Generate'.
+Place cursor inside a model class in the java editor window, right click and select **Source** -> **Generate model builder code...**
 
-#### The result
+Then select which fields you want to expose in the builder. Click **Generate**.
 
+### Example of the result
 ```
 public class Person {
     private String address;
@@ -70,3 +72,12 @@ public class Person {
     }
 }
 ```
+
+### Examples of builder usage
+```
+Name name = Name.builder().firstname("John").surname("Doe").build();
+```
+```
+Name name2 = Name.builder().from(name).build();
+```
+## Enjoy!
