@@ -11,8 +11,8 @@ This is a yet another eclipse plugin to generate fluent builders for POJO/DTO/Mo
 1. By making master bean properties private and providing only getters, one can follow an immutability pattern by means of builder object (of generated builder class). See usage section below.
 
 ### Tested on platforms
- - **Indigo** (Eclipse 3.7)
- - **Juno** (Eclipse 4.2)
+ - **Indigo** (Eclipse 3.7) - [download](https://github.com/gd-sviatoslav/eclipse-model-builder-plugin/blob/master/downloads/model-builder-plugin-1.0.0-SNAPSHOT.jar?raw=true)
+ - **Juno** (Eclipse 4.2) - [download](https://github.com/gd-sviatoslav/eclipse-model-builder-plugin/blob/master/downloads/model-builder-plugin-1.0.0-SNAPSHOT.jar?raw=true)
 
 ### Generally, inspired by
  - https://github.com/henningjensen/bpep
@@ -22,7 +22,7 @@ This is a yet another eclipse plugin to generate fluent builders for POJO/DTO/Mo
 
 ### How to install
 1. Download the sources, build it with Maven __mvn package__.
-1. Put the result jar file (../plugin/target/model-builder-plugin-1.0.0-SNAPSHOT.jar) in the __eclipse/dropins__ directory.
+1. Put the result jar file (../plugin/target/model-builder-plugin-1.0.0-SNAPSHOT.jar) into the __eclipse/dropins__ directory.
 
 ### How to use
 
