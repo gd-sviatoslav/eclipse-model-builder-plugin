@@ -12,6 +12,7 @@ This is a yet another eclipse plugin to generate fluent builders for POJO/DTO/Mo
 
 ### Tested on platforms
  - **Indigo** (Eclipse 3.7)
+ - **Juno** (Eclipse 4.2)
 
 ### Generally, inspired by
  - https://github.com/henningjensen/bpep
