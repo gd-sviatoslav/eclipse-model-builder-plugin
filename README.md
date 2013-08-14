@@ -81,4 +81,5 @@ Name name = Name.builder().firstname("John").surname("Doe").build();
 ```
 Name name2 = Name.builder().from(name).build();
 ```
+### [Download](https://github.com/gd-sviatoslav/eclipse-model-builder-plugin/blob/master/downloads/model-builder-plugin-1.0.0-SNAPSHOT.jar?raw=true)
 ## Enjoy!
