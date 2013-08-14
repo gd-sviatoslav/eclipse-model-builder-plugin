@@ -10,10 +10,6 @@ This is a yet another eclipse plugin to generate fluent builders for POJO/DTO/Mo
 1. Generates **from** method to copy values from another bean  (see example below).
 1. By making master bean properties private and providing only getters, one can follow an immutability pattern by means of builder object (of generated builder class). See usage section below.
 
-### Tested on platforms
- - **Indigo** (Eclipse 3.7) - [download](https://github.com/gd-sviatoslav/eclipse-model-builder-plugin/blob/master/downloads/model-builder-plugin-1.0.0-SNAPSHOT.jar?raw=true)
- - **Juno** (Eclipse 4.2) - [download](https://github.com/gd-sviatoslav/eclipse-model-builder-plugin/blob/master/downloads/model-builder-plugin-1.0.0-SNAPSHOT.jar?raw=true)
-
 ### Generally, inspired by
  - https://github.com/henningjensen/bpep
  - https://github.com/belowm/de.below.bgen
@@ -22,7 +18,12 @@ This is a yet another eclipse plugin to generate fluent builders for POJO/DTO/Mo
 
 ### How to install
 1. Download the sources, build it with Maven __mvn package__.
-1. Put the result jar file (../plugin/target/model-builder-plugin-1.0.0-SNAPSHOT.jar) into the __eclipse/dropins__ directory.
+1. **Or** [download packaged jar](https://github.com/gd-sviatoslav/eclipse-model-builder-plugin/blob/master/downloads/model-builder-plugin-1.0.0-SNAPSHOT.jar?raw=true).
+1. Put the jar file (../plugin/target/model-builder-plugin-1.0.0-SNAPSHOT.jar) into the __eclipse/dropins__ directory.
+
+### Tested on platforms
+ - **Indigo** (Eclipse 3.7)
+ - **Juno** (Eclipse 4.2)
 
 ### How to use
 
@@ -81,5 +82,6 @@ Name name = Name.builder().firstname("John").surname("Doe").build();
 ```
 Name name2 = Name.builder().from(name).build();
 ```
-### [Download](https://github.com/gd-sviatoslav/eclipse-model-builder-plugin/blob/master/downloads/model-builder-plugin-1.0.0-SNAPSHOT.jar?raw=true)
+### [Download jar](https://github.com/gd-sviatoslav/eclipse-model-builder-plugin/blob/master/downloads/model-builder-plugin-1.0.0-SNAPSHOT.jar?raw=true)
+
 ## Enjoy!
