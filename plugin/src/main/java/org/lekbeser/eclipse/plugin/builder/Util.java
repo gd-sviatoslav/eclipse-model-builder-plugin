@@ -35,9 +35,9 @@ public final class Util {
         try {
             return Signature.toString(field.getTypeSignature());
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            Activator.error(e, "Could not generate code.");
         } catch (JavaModelException e) {
-            e.printStackTrace();
+            Activator.error(e, "Could not generate code.");
         }
         return null;
     }
@@ -53,7 +53,7 @@ public final class Util {
                 }
             }
         } catch (JavaModelException e) {
-            e.printStackTrace();// todo now sl: any logging?
+            Activator.error(e, "Could not generate code.");
         }
         return fields;
     }

@@ -1,5 +1,8 @@
 package org.lekbeser.eclipse.plugin.builder;
 
+import java.text.MessageFormat;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -43,6 +46,22 @@ public class Activator extends AbstractUIPlugin {
      */
     public static ImageDescriptor getImageDescriptor(String path) {
         return imageDescriptorFromPlugin(PLUGIN_ID, path);
+    }
+
+    public static void info(String msg, Object... params) {
+        plugin.getLog().log(new Status(IStatus.INFO, PLUGIN_ID, MessageFormat.format(msg, params)));
+    }
+
+    public static void warn(String msg, Object... params) {
+        plugin.getLog().log(new Status(IStatus.WARNING, PLUGIN_ID, MessageFormat.format(msg, params)));
+    }
+
+    public static void error(String msg, Object... params) {
+        plugin.getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, MessageFormat.format(msg, params)));
+    }
+
+    public static void error(Throwable t, String msg, Object... params) {
+        plugin.getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, MessageFormat.format(msg, params), t));
     }
 
 }

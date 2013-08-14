@@ -52,11 +52,11 @@ public class GenerateBuilderAction extends Action implements IEditorActionDelega
             }
 
         } catch (JavaModelException e) {
-            e.printStackTrace();
+            Activator.error(e, "Could not generate code.");
         } catch (CoreException e) {
-            e.printStackTrace();
+            Activator.error(e, "Could not generate code.");
         } catch (Throwable e) {
-            Util.showError("Error: {0}", e);
+            Activator.error(e, "Could not generate code.");
         } finally {
             manager.disconnect(editorInput);
         }

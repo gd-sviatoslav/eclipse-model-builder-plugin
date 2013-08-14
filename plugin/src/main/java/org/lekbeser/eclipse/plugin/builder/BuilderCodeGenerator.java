@@ -50,11 +50,11 @@ public class BuilderCodeGenerator {
                 buffer.replace(pos, 0, sw.toString());
             }
         } catch (JavaModelException e) {
-            e.printStackTrace();
+            Activator.error(e, "Could not generate code.");
         } catch (MalformedTreeException e) {
-            e.printStackTrace();
+            Activator.error(e, "Could not generate code.");
         } catch (BadLocationException e) {
-            e.printStackTrace();
+            Activator.error(e, "Could not generate code.");
         }
     }
 
