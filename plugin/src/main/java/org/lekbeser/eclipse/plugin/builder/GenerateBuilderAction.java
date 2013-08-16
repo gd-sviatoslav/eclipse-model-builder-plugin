@@ -10,6 +10,8 @@ import org.eclipse.jdt.ui.IWorkingCopyManager;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Shell;
@@ -18,6 +20,9 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.eclipse.ui.texteditor.AbstractTextEditor;
+import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.lekbeser.eclipse.plugin.builder.BuilderOptions.BuilderOptionsBuilder;
 
 public class GenerateBuilderAction extends Action implements IEditorActionDelegate, IWorkbenchWindowActionDelegate {
@@ -31,11 +36,11 @@ public class GenerateBuilderAction extends Action implements IEditorActionDelega
         IEditorInput editorInput = editor.getEditorInput();
         try {
             ITextSelection textSelection = (ITextSelection) editor.getSite().getSelectionProvider().getSelection();
-            int offset = textSelection.getOffset();
             ITypeRoot root = (ITypeRoot) JavaUI.getEditorInputJavaElement(editorInput);
-            IJavaElement elt = root.getElementAt(offset);
+            IJavaElement elt = root.getElementAt(textSelection.getOffset());
             IType enclosingType = (IType) elt.getAncestor(IJavaElement.TYPE);
 
+            options.initialOffset(getColumnOffset(editor, textSelection));
             options.enclosingType(enclosingType);
             options.fullTypeName(enclosingType.getFullyQualifiedName());
             options.typeName(enclosingType.getElementName());
@@ -60,7 +65,23 @@ public class GenerateBuilderAction extends Action implements IEditorActionDelega
         } finally {
             manager.disconnect(editorInput);
         }
+    }
 
+    private static int getColumnOffset(IEditorPart editor, ITextSelection textSelection) {
+        if (!(editor instanceof AbstractTextEditor)) {
+            return 0;
+        }
+        final ITextEditor textEditor = (ITextEditor) editor;
+        IDocumentProvider dp = textEditor.getDocumentProvider();
+        IDocument doc = dp.getDocument(textEditor.getEditorInput());
+        int line = textSelection.getStartLine();
+        int column = 0;
+        try {
+            column = textSelection.getOffset() - doc.getLineOffset(line);
+        } catch (BadLocationException e) {
+            Activator.error(e, "Could not find cursor position.");
+        }
+        return column;
     }
 
     public void selectionChanged(IAction action, ISelection selection) {

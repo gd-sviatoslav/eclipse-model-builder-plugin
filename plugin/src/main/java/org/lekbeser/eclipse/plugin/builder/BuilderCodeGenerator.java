@@ -60,47 +60,59 @@ public class BuilderCodeGenerator {
 
     private static void generateBuilderCode(final PrintWriter pw, final BuilderOptions opts) {
         final String typeName = opts.getTypeName();
-        pw.println();
-        pw.println(line("public static {0}Builder builder() '{'", typeName));
-        pw.println(line("    return new {0}Builder();", typeName));
-        pw.println("}");
+        final String offset = buildOffsetString(opts);
 
         pw.println();
-        pw.println(line("public static class {0}Builder '{'", typeName));
+        pw.println(line(offset + "public static {0}Builder builder() '{'", typeName));
+        pw.println(line(offset + "    return new {0}Builder();", typeName));
+        pw.println(offset + "}");
+
+        pw.println();
+        pw.println(line(offset + "public static class {0}Builder '{'", typeName));
         for (IField field : opts.getFields()) { // fields
-            pw.println(line("    private {0} {1};", getType(field), getName(field)));
+            pw.println(line(offset + "    private {0} {1};", getType(field), getName(field)));
         }
         for (IField field : opts.getFields()) { // builder methods
             String fieldName = getName(field);
             String baseName = getFieldBaseName(fieldName);
             pw.println();
-            pw.println(line("    public {0}Builder {1}({2} {3}) '{'", typeName, baseName, getType(field), fieldName));
-            pw.println(line("        this.{0} = {0};", fieldName));
-            pw.println("        return this;");
-            pw.println("    }");
+            pw.println(line(offset + "    public {0}Builder {1}({2} {3}) '{'", typeName, baseName, getType(field), fieldName));
+            pw.println(line(offset + "        this.{0} = {0};", fieldName));
+            pw.println(offset + "        return this;");
+            pw.println(offset + "    }");
         }
 
         pw.println(); // 'from'-method
-        pw.println(line("    public {0}Builder from({0} origin) '{'", typeName));
+        pw.println(line(offset + "    public {0}Builder from({0} origin) '{'", typeName));
         for (IField field : opts.getFields()) { // builder methods
             String fieldName = getName(field);
             String baseName = getFieldBaseName(fieldName);
-            pw.println(line("        this.{0}(origin.{1});", baseName, fieldName));
+            pw.println(line(offset + "        this.{0}(origin.{1});", baseName, fieldName));
         }
-        pw.println("        return this;");
-        pw.println("    }");
+        pw.println(offset + "        return this;");
+        pw.println(offset + "    }");
 
         pw.println(); // 'build'-method
-        pw.println(line("    public {0} build() '{'", typeName));
-        pw.println(line("        {0} m = new {0}();", typeName));
+        pw.println(line(offset + "    public {0} build() '{'", typeName));
+        pw.println(line(offset + "        {0} m = new {0}();", typeName));
         for (IField field : opts.getFields()) {
             String fieldName = getName(field);
-            pw.println(line("        m.{0} = this.{0};", fieldName));
+            pw.println(line(offset + "        m.{0} = this.{0};", fieldName));
         }
-        pw.println("        return m;");
-        pw.println("    }");
-        pw.println("}");
+        pw.println(offset + "        return m;");
+        pw.println(offset + "    }");
+        pw.println(offset + "}");
         pw.println();
+    }
+
+    private static String buildOffsetString(final BuilderOptions opts) {
+        final int initialOffset = opts.getInitialOffset();
+        final StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < initialOffset; i++) {
+            sb.append(" ");
+        }
+        final String offset = sb.toString();
+        return offset;
     }
 
     private static String getFieldBaseName(String fieldName) {
