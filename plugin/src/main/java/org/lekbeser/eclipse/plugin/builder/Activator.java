@@ -1,5 +1,7 @@
 package org.lekbeser.eclipse.plugin.builder;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.MessageFormat;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -49,19 +51,38 @@ public class Activator extends AbstractUIPlugin {
     }
 
     public static void info(String msg, Object... params) {
-        plugin.getLog().log(new Status(IStatus.INFO, PLUGIN_ID, MessageFormat.format(msg, params)));
+        if (null != plugin) {
+            plugin.getLog().log(new Status(IStatus.INFO, PLUGIN_ID, MessageFormat.format(msg, params)));
+        } else {
+            Util.showMessage(msg, params);
+        }
     }
 
     public static void warn(String msg, Object... params) {
-        plugin.getLog().log(new Status(IStatus.WARNING, PLUGIN_ID, MessageFormat.format(msg, params)));
+        if (null != plugin) {
+            plugin.getLog().log(new Status(IStatus.WARNING, PLUGIN_ID, MessageFormat.format(msg, params)));
+        } else {
+            Util.showMessage(msg, params);
+        }
     }
 
     public static void error(String msg, Object... params) {
-        plugin.getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, MessageFormat.format(msg, params)));
+        if (null != plugin) {
+            plugin.getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, MessageFormat.format(msg, params)));
+        } else {
+            Util.showError(msg, params);
+        }
     }
 
     public static void error(Throwable t, String msg, Object... params) {
-        plugin.getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, MessageFormat.format(msg, params), t));
+        if (null != plugin) {
+            plugin.getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, MessageFormat.format(msg, params), t));
+        } else {
+            final StringWriter sw = new StringWriter();
+            final PrintWriter pw = new PrintWriter(sw);
+            t.printStackTrace(pw);
+            Util.showError(msg + "\n\n" + sw.toString(), params);
+        }
     }
 
 }

@@ -35,6 +35,7 @@
   </dependencyManagement>
 
   <build>
+    <defaultGoal>package</defaultGoal>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

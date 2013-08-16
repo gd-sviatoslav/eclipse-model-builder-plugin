@@ -14,6 +14,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -23,7 +24,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.lekbeser.eclipse.plugin.builder.BuilderOptions.BuilderOptionsBuilder;
 
-public class BuilderDialog extends Dialog {
+public class BuilderDialog extends Dialog {// todo now sl: fix layout (btns)
 
     private final Display display;
 
@@ -45,8 +46,8 @@ public class BuilderDialog extends Dialog {
         final Shell shell = createShell("Generate model builder code");
         buildHeaderPanel(shell, options);
         final List<Button> fieldButtons = buildFieldsSelectionPanel(shell, options);
-        buildOptionsPanel(shell, optionsBuilder);
-        buildActionsPanel(shell, fieldButtons, optionsBuilder);
+        buildExtraOptionsPanel(shell, optionsBuilder);
+        buildFooterCommandsPanel(shell, fieldButtons, optionsBuilder);
         shell.pack();
         placeDialogInCenter(shell);
         shell.open();
@@ -57,31 +58,43 @@ public class BuilderDialog extends Dialog {
         }
     }
 
-    private Shell createShell(String title) {// todo now sl: fix layout (btns)
+    private Shell createShell(String title) {
         final Shell shell = new Shell(getParent(), SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.CENTER);
         shell.setText(title);
-        final GridLayout mainLayout = new GridLayout(3, false);
+        final GridLayout mainLayout = new GridLayout(2, false);
         mainLayout.marginTop = 5;
-        mainLayout.marginBottom = 10;
+        mainLayout.marginBottom = 7;
         mainLayout.marginRight = 7;
         mainLayout.marginLeft = 7;
+        mainLayout.verticalSpacing = 5;
         shell.setLayout(mainLayout);
         return shell;
     }
 
-    private static void buildActionsPanel(final Shell shell, final List<Button> fieldButtons, final BuilderOptionsBuilder optionsBuilder) {
-        final Group actionsGroup = new Group(shell, SWT.SHADOW_NONE);
-        actionsGroup.setLayout(new RowLayout(SWT.HORIZONTAL));
-        GridData actionsGridData = new GridData();
-        actionsGridData.horizontalSpan = 3;
-        actionsGridData.horizontalAlignment = SWT.RIGHT;
-        actionsGroup.setLayoutData(actionsGridData);
+    private static void buildHeaderPanel(final Shell shell, final BuilderOptions options) {
+        final Group gType = new Group(shell, SWT.SHADOW_ETCHED_IN);
+        gType.setText("Type");
+        GridData gLayoutData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+        gLayoutData.horizontalSpan = 2;
+        gType.setLayoutData(gLayoutData);
+        gType.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        final Button genButton = new Button(actionsGroup, SWT.PUSH);
+        Label label = new Label(gType, SWT.NONE);
+        label.setText(options.getFullTypeName());
+    }
+
+    private static void buildFooterCommandsPanel(final Shell shell, final List<Button> fieldButtons,
+            final BuilderOptionsBuilder optionsBuilder) {
+        final Composite group = new Composite(shell, SWT.NONE);
+        GridData gLayoutData = new GridData(SWT.RIGHT, SWT.CENTER, true, true, 2, 1);
+        group.setLayoutData(gLayoutData);
+        group.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+        final Button cancelButton = new Button(group, SWT.PUSH);
+        cancelButton.setText("Cancel");
+        final Button genButton = new Button(group, SWT.PUSH);
         genButton.setText("Generate");
         shell.setDefaultButton(genButton);
-        final Button cancelButton = new Button(actionsGroup, SWT.PUSH);
-        cancelButton.setText("Cancel");
 
         final Listener clickListener = new Listener() {
             public void handleEvent(Event event) {
@@ -104,16 +117,16 @@ public class BuilderDialog extends Dialog {
         cancelButton.addListener(SWT.Selection, clickListener);
     }
 
-    private static void buildOptionsPanel(final Shell shell, final BuilderOptionsBuilder optionsBuilder) {
-        final Group optionsGroup = new Group(shell, SWT.SHADOW_ETCHED_IN);
-        optionsGroup.setText("Options");
-        optionsGroup.setLayout(new RowLayout(SWT.VERTICAL));
-        GridData optionsGridData = new GridData();
-        optionsGridData.horizontalSpan = 3;
-        optionsGridData.horizontalAlignment = SWT.FILL;
-        optionsGroup.setLayoutData(optionsGridData);
-        final Button cbxFormatSource = new Button(optionsGroup, SWT.CHECK);
-        cbxFormatSource.setText("Format source code (entire file)");
+    private static void buildExtraOptionsPanel(final Shell shell, final BuilderOptionsBuilder optionsBuilder) {
+        final Group gOptions = new Group(shell, SWT.SHADOW_ETCHED_IN);
+        gOptions.setText("Options");
+        GridData gLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
+        gLayoutData.horizontalSpan = 2;
+        gLayoutData.verticalIndent = 5;
+        gOptions.setLayoutData(gLayoutData);
+        gOptions.setLayout(new RowLayout(SWT.VERTICAL));
+        final Button cbxFormatSource = new Button(gOptions, SWT.CHECK);
+        cbxFormatSource.setText("format source code (entire file) after builder code added");
         cbxFormatSource.addSelectionListener(new SelectionListener() {
 
             @Override
@@ -125,37 +138,27 @@ public class BuilderDialog extends Dialog {
             public void widgetDefaultSelected(SelectionEvent arg0) {
             }
         });
-        optionsGroup.pack();
-    }
-
-    private static void buildHeaderPanel(final Shell shell, final BuilderOptions options) {
-        Label label = new Label(shell, SWT.NONE);
-        label.setText("Type: " + options.getFullTypeName());
-        GridData data = new GridData();
-        data.horizontalSpan = 3;
-        data.horizontalAlignment = SWT.FILL;
-        label.setLayoutData(data);
+        gOptions.pack();
     }
 
     private static List<Button> buildFieldsSelectionPanel(final Shell shell, final BuilderOptions options) {
-        Group fieldsGroup = new Group(shell, SWT.SHADOW_ETCHED_IN);
-        fieldsGroup.setText("Select fields to include");
-        fieldsGroup.setLayout(new RowLayout(SWT.VERTICAL));
-        GridData fieldsGroupLayout = new GridData();
-        fieldsGroupLayout.horizontalSpan = 2;
-        fieldsGroupLayout.verticalSpan = 2;
-        fieldsGroup.setLayoutData(fieldsGroupLayout);
-        final List<Button> fieldButtons = createFieldSelectionCheckboxes(fieldsGroup, options);
-        createSelectAllButton(shell, fieldButtons);
-        createSelectNoneButton(shell, fieldButtons);
+        Group gFields = new Group(shell, SWT.SHADOW_ETCHED_IN);
+        gFields.setText("Select fields to include");
+        GridData gLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
+        gLayoutData.horizontalSpan = 1;
+        gLayoutData.verticalIndent = 5;
+        gFields.setLayoutData(gLayoutData);
+        gFields.setLayout(new RowLayout(SWT.VERTICAL));
+        final List<Button> fieldButtons = createFieldSelectionCheckboxes(gFields, options);
+        buildSelectionActionsPanel(shell, fieldButtons);
         return fieldButtons;
     }
 
-    private static List<Button> createFieldSelectionCheckboxes(Group fieldGroup, final BuilderOptions options) {
+    private static List<Button> createFieldSelectionCheckboxes(Group gFields, final BuilderOptions options) {
         final List<IField> fields = Util.findAllFields(options.getEnclosingType());
         final List<Button> fieldButtons = new ArrayList<Button>();
         for (IField field : fields) {
-            Button button = new Button(fieldGroup, SWT.CHECK);
+            Button button = new Button(gFields, SWT.CHECK);
             button.setText(Util.getName(field) + "(" + Util.getType(field) + ")");
             button.setData(field);
             button.setSelection(true);
@@ -164,26 +167,37 @@ public class BuilderDialog extends Dialog {
         return fieldButtons;
     }
 
-    private static void createSelectAllButton(final Shell shell, final List<Button> fieldButtons) {
-        Button btn = new Button(shell, SWT.PUSH);
-        btn.setText("Select all");
-        GridData data = new GridData(SWT.FILL, SWT.FILL, true, false);
-        data.verticalIndent = 10;
-        data.horizontalSpan = 1;
-        data.verticalSpan = 1;
-        btn.setLayoutData(data);
-        btn.addSelectionListener(new FieldSelectionAdapter(fieldButtons, true));
+    private static void buildSelectionActionsPanel(final Shell shell, final List<Button> fieldButtons) {
+        final Composite gActions = new Composite(shell, SWT.NONE);
+        GridData gLayoutData = new GridData(SWT.FILL, SWT.TOP, true, false);
+        gLayoutData.horizontalSpan = 1;
+        gActions.setLayoutData(gLayoutData);
+
+        final GridLayout actionsLayout = new GridLayout(1, false);
+        actionsLayout.marginTop = 10;
+        actionsLayout.marginRight = 10;
+        actionsLayout.marginLeft = 10;
+        gActions.setLayout(actionsLayout);
+        createSelectAllButton(gActions, fieldButtons);
+        createSelectNoneButton(gActions, fieldButtons);
     }
 
-    private static void createSelectNoneButton(final Shell shell, final List<Button> fieldButtons) {
-        Button btn = new Button(shell, SWT.PUSH);
+    private static void createSelectAllButton(final Composite gActions, final List<Button> fieldButtons) {
+        Button btn = new Button(gActions, SWT.PUSH);
+        btn.setText("Select all");
+        btn.addSelectionListener(new FieldSelectionAdapter(fieldButtons, true));
+        GridData btnLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
+        btnLayoutData.horizontalSpan = 1;
+        btn.setLayoutData(btnLayoutData);
+    }
+
+    private static void createSelectNoneButton(final Composite gActions, final List<Button> fieldButtons) {
+        Button btn = new Button(gActions, SWT.PUSH);
         btn.setText("Deselect all");
-        GridData data = new GridData(SWT.FILL, SWT.FILL, true, false);
-        data.verticalAlignment = SWT.BEGINNING;
-        data.horizontalSpan = 1;
-        data.verticalSpan = 1;
-        btn.setLayoutData(data);
         btn.addSelectionListener(new FieldSelectionAdapter(fieldButtons, false));
+        GridData btnLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
+        btnLayoutData.horizontalSpan = 1;
+        btn.setLayoutData(btnLayoutData);
     }
 
     private static class FieldSelectionAdapter extends SelectionAdapter {

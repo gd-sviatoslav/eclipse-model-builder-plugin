@@ -5,7 +5,7 @@ public class Person {
     private Address address;
 
     static class Identity {
-        private long id;
+        long id;
 
         public long getId() {
             return id;
