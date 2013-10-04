@@ -52,12 +52,28 @@ public class BuilderCodeGenerator {
     }
 
     private static String toMethodName(final String baseName, final BuilderOptions opts) {
-        return opts.isAddWithPrefix()? "with" + baseName.substring(0, 1).toUpperCase() + baseName.substring(1) : baseName;
+        return opts.isAddWithPrefix()? toWithName(baseName) : baseName;
+    }
+
+    private static String toWithName(final String baseName) {
+        return "with" + baseName.substring(0, 1).toUpperCase() + baseName.substring(1);
     }
 
     private static void generateBuilderCode(final PrintWriter pw, final BuilderOptions opts) {
         final String typeName = opts.getTypeName();
         final String offset = buildOffsetString(opts);
+
+        if(opts.isAddWithMethods()){
+            for (IField field : opts.getFields()) { // master bean methods
+                String fieldName = getName(field);
+                String baseName = getFieldBaseName(fieldName);
+                pw.println();
+                pw.println(line(offset + "public {0} {1}({2} {3}) '{'", typeName, toWithName(baseName), getType(field), fieldName));
+                pw.println(line(offset + "    this.{0} = {0};", fieldName));
+                pw.println(offset + "    return this;");
+                pw.println(offset + "}");
+            }
+        }
 
         pw.println();
         pw.println(line(offset + "public static {0}Builder builder() '{'", typeName));
@@ -93,7 +109,7 @@ public class BuilderCodeGenerator {
 
         pw.println(); // 'build'-method
         pw.println(line(offset + "    public {0} build() '{'", typeName));
-        pw.println(line(offset + "        {0} m = new {0}();", typeName));
+        pw.println(line(offset + "        final {0} m = new {0}();", typeName));
         for (IField field : opts.getFields()) {
             String fieldName = getName(field);
             pw.println(line(offset + "        m.{0} = this.{0};", fieldName));

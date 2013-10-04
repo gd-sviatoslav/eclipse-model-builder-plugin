@@ -18,9 +18,9 @@ public class Person {
 
     static class Address extends Identity {
         private String city;
-        private String street;
-        private String number;
-
+        protected int streetNumber;
+        String number;
+        
     }
 
 }

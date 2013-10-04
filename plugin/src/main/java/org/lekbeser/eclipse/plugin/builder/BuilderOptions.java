@@ -14,8 +14,17 @@ public class BuilderOptions {
     private boolean addWithPrefix;
     private boolean fromMethod;
     private boolean formatSourceCode;
+    private boolean addWithMethods;
 
     public BuilderOptions() {
+    }
+
+    public boolean isAddWithMethods() {
+        return addWithMethods;
+    }
+
+    public void setAddWithMethods(boolean addWithMethods) {
+        this.addWithMethods = addWithMethods;
     }
 
     public boolean isFromMethod() {
@@ -76,6 +85,7 @@ public class BuilderOptions {
         private boolean formatSourceCode;
         private boolean addWithPrefix;
         private boolean fromMethod;
+        private boolean addWithMethods;
 
         public BuilderOptionsBuilder typeName(String typeName) {
             this.typeName = typeName;
@@ -121,7 +131,12 @@ public class BuilderOptions {
             this.fromMethod = is;
             return this;
         }
-        
+
+        public BuilderOptionsBuilder addWithMethods(boolean is) {
+            this.addWithMethods = is;
+            return this;
+        }
+
         public BuilderOptionsBuilder from(BuilderOptions origin) {
             this.typeName(origin.typeName);
             this.fullTypeName(origin.fullTypeName);
@@ -132,6 +147,7 @@ public class BuilderOptions {
             this.formatSourceCode(origin.formatSourceCode);
             this.addWithPrefix(origin.addWithPrefix);
             this.fromMethod(origin.fromMethod);
+            this.addWithMethods(origin.addWithMethods);
             return this;
         }
 
@@ -146,6 +162,7 @@ public class BuilderOptions {
             m.formatSourceCode = this.formatSourceCode;
             m.addWithPrefix = this.addWithPrefix;
             m.fromMethod = this.fromMethod;
+            m.addWithMethods = this.addWithMethods;
             return m;
         }
     }

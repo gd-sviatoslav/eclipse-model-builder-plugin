@@ -156,6 +156,20 @@ public class BuilderDialog extends Dialog {// todo now sl: fix layout (btns)
             }
         });
 
+        final Button cbxWithMethods = new Button(gOptions, SWT.CHECK);
+        cbxWithMethods.setText("add 'with' methods to master bean");
+        cbxWithMethods.addSelectionListener(new SelectionListener() {
+
+            @Override
+            public void widgetSelected(SelectionEvent arg0) {
+                optionsBuilder.addWithMethods(cbxWithMethods.getSelection());
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent arg0) {
+            }
+        });
+
         gOptions.pack();
     }
 
