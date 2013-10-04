@@ -1,9 +1,7 @@
 package org.lekbeser.eclipse.plugin.builder;
 
 import java.util.List;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.*;
 
 public class BuilderOptions {
 
@@ -13,7 +11,7 @@ public class BuilderOptions {
     private IType enclosingType;
     private List<IField> fields;
     private int initialOffset;
-
+    private boolean addWithPrefix;
     private boolean formatSourceCode;
 
     public BuilderOptions() {
@@ -47,6 +45,14 @@ public class BuilderOptions {
         return formatSourceCode;
     }
 
+    public boolean isAddWithPrefix() {
+        return addWithPrefix;
+    }
+
+    public void setAddWithPrefix(boolean addWithPrefix) {
+        this.addWithPrefix = addWithPrefix;
+    }
+
     public static BuilderOptionsBuilder builder() {
         return new BuilderOptionsBuilder();
     }
@@ -59,6 +65,7 @@ public class BuilderOptions {
         private List<IField> fields;
         private int initialOffset;
         private boolean formatSourceCode;
+        private boolean addWithPrefix;
 
         public BuilderOptionsBuilder typeName(String typeName) {
             this.typeName = typeName;
@@ -95,6 +102,11 @@ public class BuilderOptions {
             return this;
         }
 
+        public BuilderOptionsBuilder addWithPrefix(boolean is) {
+            this.addWithPrefix = is;
+            return this;
+        }
+
         public BuilderOptionsBuilder from(BuilderOptions origin) {
             this.typeName(origin.typeName);
             this.fullTypeName(origin.fullTypeName);
@@ -103,6 +115,7 @@ public class BuilderOptions {
             this.fields(origin.fields);
             this.initialOffset(origin.initialOffset);
             this.formatSourceCode(origin.formatSourceCode);
+            this.addWithPrefix(origin.addWithPrefix);
             return this;
         }
 
@@ -115,6 +128,7 @@ public class BuilderOptions {
             m.fields = this.fields;
             m.initialOffset = this.initialOffset;
             m.formatSourceCode = this.formatSourceCode;
+            m.addWithPrefix = this.addWithPrefix;
             return m;
         }
     }

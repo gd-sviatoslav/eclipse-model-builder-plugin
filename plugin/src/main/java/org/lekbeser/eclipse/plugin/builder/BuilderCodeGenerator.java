@@ -6,14 +6,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.jdt.core.IBuffer;
-import org.eclipse.jdt.core.IField;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.NamingConventions;
-import org.eclipse.jdt.core.ToolFactory;
+import org.eclipse.jdt.core.*;
 import org.eclipse.jdt.core.formatter.CodeFormatter;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
@@ -58,6 +51,10 @@ public class BuilderCodeGenerator {
         }
     }
 
+    private static String toMethodName(final String baseName, final BuilderOptions opts) {
+        return opts.isAddWithPrefix()? "with" + baseName.substring(0, 1).toUpperCase() + baseName.substring(1) : baseName;
+    }
+
     private static void generateBuilderCode(final PrintWriter pw, final BuilderOptions opts) {
         final String typeName = opts.getTypeName();
         final String offset = buildOffsetString(opts);
@@ -76,7 +73,7 @@ public class BuilderCodeGenerator {
             String fieldName = getName(field);
             String baseName = getFieldBaseName(fieldName);
             pw.println();
-            pw.println(line(offset + "    public {0}Builder {1}({2} {3}) '{'", typeName, baseName, getType(field), fieldName));
+            pw.println(line(offset + "    public {0}Builder {1}({2} {3}) '{'", typeName, toMethodName(baseName, opts), getType(field), fieldName));
             pw.println(line(offset + "        this.{0} = {0};", fieldName));
             pw.println(offset + "        return this;");
             pw.println(offset + "    }");
@@ -87,7 +84,7 @@ public class BuilderCodeGenerator {
         for (IField field : opts.getFields()) { // builder methods
             String fieldName = getName(field);
             String baseName = getFieldBaseName(fieldName);
-            pw.println(line(offset + "        this.{0}(origin.{1});", baseName, fieldName));
+            pw.println(line(offset + "        this.{0}(origin.{1});", toMethodName(baseName, opts), fieldName));
         }
         pw.println(offset + "        return this;");
         pw.println(offset + "    }");
@@ -107,7 +104,7 @@ public class BuilderCodeGenerator {
 
     private static String buildOffsetString(final BuilderOptions opts) {
         final int initialOffset = opts.getInitialOffset();
-        final StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder(initialOffset);
         for (int i = 0; i < initialOffset; i++) {
             sb.append(" ");
         }

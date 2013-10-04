@@ -5,23 +5,11 @@ import java.util.List;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Dialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.layout.*;
+import org.eclipse.swt.widgets.*;
 import org.lekbeser.eclipse.plugin.builder.BuilderOptions.BuilderOptionsBuilder;
 
 public class BuilderDialog extends Dialog {// todo now sl: fix layout (btns)
@@ -125,6 +113,7 @@ public class BuilderDialog extends Dialog {// todo now sl: fix layout (btns)
         gLayoutData.verticalIndent = 5;
         gOptions.setLayoutData(gLayoutData);
         gOptions.setLayout(new RowLayout(SWT.VERTICAL));
+
         final Button cbxFormatSource = new Button(gOptions, SWT.CHECK);
         cbxFormatSource.setText("format source code (entire file) after builder code added");
         cbxFormatSource.addSelectionListener(new SelectionListener() {
@@ -132,6 +121,20 @@ public class BuilderDialog extends Dialog {// todo now sl: fix layout (btns)
             @Override
             public void widgetSelected(SelectionEvent arg0) {
                 optionsBuilder.formatSourceCode(cbxFormatSource.getSelection());
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent arg0) {
+            }
+        });
+
+        final Button cbxAddWithPrefix = new Button(gOptions, SWT.CHECK);
+        cbxAddWithPrefix.setText("add 'with' prefix to builder methods");
+        cbxAddWithPrefix.addSelectionListener(new SelectionListener() {
+
+            @Override
+            public void widgetSelected(SelectionEvent arg0) {
+                optionsBuilder.addWithPrefix(cbxAddWithPrefix.getSelection());
             }
 
             @Override
