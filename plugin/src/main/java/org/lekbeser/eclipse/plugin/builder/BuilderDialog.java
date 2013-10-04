@@ -128,6 +128,20 @@ public class BuilderDialog extends Dialog {// todo now sl: fix layout (btns)
             }
         });
 
+        final Button cbxFromMethod = new Button(gOptions, SWT.CHECK);
+        cbxFromMethod.setText("add 'from' builder method");
+        cbxFromMethod.addSelectionListener(new SelectionListener() {
+
+            @Override
+            public void widgetSelected(SelectionEvent arg0) {
+                optionsBuilder.fromMethod(cbxFromMethod.getSelection());
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent arg0) {
+            }
+        });
+
         final Button cbxAddWithPrefix = new Button(gOptions, SWT.CHECK);
         cbxAddWithPrefix.setText("add 'with' prefix to builder methods");
         cbxAddWithPrefix.addSelectionListener(new SelectionListener() {
@@ -141,6 +155,7 @@ public class BuilderDialog extends Dialog {// todo now sl: fix layout (btns)
             public void widgetDefaultSelected(SelectionEvent arg0) {
             }
         });
+
         gOptions.pack();
     }
 

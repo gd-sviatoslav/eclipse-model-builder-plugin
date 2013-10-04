@@ -12,9 +12,18 @@ public class BuilderOptions {
     private List<IField> fields;
     private int initialOffset;
     private boolean addWithPrefix;
+    private boolean fromMethod;
     private boolean formatSourceCode;
 
     public BuilderOptions() {
+    }
+
+    public boolean isFromMethod() {
+        return fromMethod;
+    }
+
+    public void setFromMethod(boolean fromMethod) {
+        this.fromMethod = fromMethod;
     }
 
     public int getInitialOffset() {
@@ -66,6 +75,7 @@ public class BuilderOptions {
         private int initialOffset;
         private boolean formatSourceCode;
         private boolean addWithPrefix;
+        private boolean fromMethod;
 
         public BuilderOptionsBuilder typeName(String typeName) {
             this.typeName = typeName;
@@ -107,6 +117,11 @@ public class BuilderOptions {
             return this;
         }
 
+        public BuilderOptionsBuilder fromMethod(boolean is) {
+            this.fromMethod = is;
+            return this;
+        }
+        
         public BuilderOptionsBuilder from(BuilderOptions origin) {
             this.typeName(origin.typeName);
             this.fullTypeName(origin.fullTypeName);
@@ -116,6 +131,7 @@ public class BuilderOptions {
             this.initialOffset(origin.initialOffset);
             this.formatSourceCode(origin.formatSourceCode);
             this.addWithPrefix(origin.addWithPrefix);
+            this.fromMethod(origin.fromMethod);
             return this;
         }
 
@@ -129,6 +145,7 @@ public class BuilderOptions {
             m.initialOffset = this.initialOffset;
             m.formatSourceCode = this.formatSourceCode;
             m.addWithPrefix = this.addWithPrefix;
+            m.fromMethod = this.fromMethod;
             return m;
         }
     }

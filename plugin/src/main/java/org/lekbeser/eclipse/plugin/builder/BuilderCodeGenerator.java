@@ -79,15 +79,17 @@ public class BuilderCodeGenerator {
             pw.println(offset + "    }");
         }
 
-        pw.println(); // 'from'-method
-        pw.println(line(offset + "    public {0}Builder from({0} origin) '{'", typeName));
-        for (IField field : opts.getFields()) { // builder methods
-            String fieldName = getName(field);
-            String baseName = getFieldBaseName(fieldName);
-            pw.println(line(offset + "        this.{0}(origin.{1});", toMethodName(baseName, opts), fieldName));
+        if(opts.isFromMethod()){ // 'from'-method
+            pw.println();
+            pw.println(line(offset + "    public {0}Builder from({0} origin) '{'", typeName));
+            for (IField field : opts.getFields()) { // builder methods
+                String fieldName = getName(field);
+                String baseName = getFieldBaseName(fieldName);
+                pw.println(line(offset + "        this.{0}(origin.{1});", toMethodName(baseName, opts), fieldName));
+            }
+            pw.println(offset + "        return this;");
+            pw.println(offset + "    }");
         }
-        pw.println(offset + "        return this;");
-        pw.println(offset + "    }");
 
         pw.println(); // 'build'-method
         pw.println(line(offset + "    public {0} build() '{'", typeName));
